@@ -1,0 +1,27 @@
+<% include ./partials/header %>
+
+<h1>
+	Oto nianie
+</h1>
+
+<div class="container">	
+	<div class="row" style="display:flex; flex-wrap: wrap;">
+
+<% niania.forEach(function(niania){%>
+		<div class="col-md-3 col-sm-6 border border-4">
+			<h2><%= niania.name %></h2>
+				<img src="<%= niania.image %>" class="img-thumbnail img-fluid">
+					<div class="caption">
+						<p>
+							opis
+						</p>
+			</div>
+			</div>
+		</dic>
+	
+<% }); %>
+		
+	</div>
+</div>	
+		
+<% include ./partials/footer %>
