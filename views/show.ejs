@@ -1,3 +1,5 @@
+<% include ./partials/header %>
+
 <h1>
 	<p> <%=niania.name%></p>
 </h1>
@@ -6,3 +8,11 @@
 <p>
 	<%=niania.desc%>
 </p>	
+
+<% niania.comments.forEach(function(comment){ %>
+	
+ <p>
+	 <%= comment.text %> - <strong> <%= comment.author %> </strong>
+</p>
+
+<%}) %>
