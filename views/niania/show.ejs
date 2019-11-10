@@ -1,0 +1,62 @@
+<% include ../partials/header %>
+<div class="container">
+
+	<div class="container">
+		<div class="row">
+				<div class="container">
+					
+				<h1>
+					<p> <strong><%= niania.name %></strong></p>
+				</h1>
+				</div>
+				<div class="container">
+					
+					<p> <img style="height: 300px;" src="<%=niania.image%>"> </p>
+				
+				<p>
+				<%=niania.desc%>
+				</p>
+			
+				<h4 class="text-right"><strong> 20zl/h </strong></h4>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">		
+				<div class="container">
+
+				<p>
+					<a class="btn btn-warning" href="/niania/<%= niania._id %>/comments/new"> ADD COMMENT </a>
+				</p>
+				</div>
+
+				<br>	
+
+
+	<div class="container border border-warning">
+
+			<div class="row border borger-info">
+			<% niania.comments.forEach(function(comment){ %>
+
+					<div class="d-flex justify-content-between">
+						<p>
+							<strong><%= comment.author %></strong>
+							<span class="text-right"> 10 days ago </span>
+						</p> 
+					</div>
+			</div>
+				<br>
+				</hr>
+					<div class="container">
+					<p>
+						<%= comment.text %>
+					</p>
+					</div>
+			<!-- <%}) %> -->
+			</div>
+	</div>
+</div>
+
+
+
+<% include ../partials/footer %>

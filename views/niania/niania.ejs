@@ -1,5 +1,7 @@
-<% include ./partials/header %>
+<% include ../partials/header %>
+<div class="container">
 
+	
 <h1>
 	Oto nianie
 </h1>
@@ -8,9 +10,9 @@
 	<div class="row" style="display:flex; flex-wrap: wrap;">
 
 <% niania.forEach(function(niania){%>
-		<div class="col-md-3 col-sm-6 border border-4">
+		<div class="col-md-3 col-sm-6 border border-4 img-thumbnail img-fluid">
 			<h2><%= niania.name %></h2>
-				<img src="<%= niania.image %>" class="img-thumbnail img-fluid">
+				<img src="<%= niania.image %>" class="img-thumbnail img-fluid" style="height: 120px; max-width: 150px;">
 					<div class="caption">
 						<p>
 							<a href="/niania/<%=niania._id %>">Opis</a>
@@ -23,5 +25,6 @@
 		
 	</div>
 </div>	
+</div>
 		
-<% include ./partials/footer %>
+<% include ../partials/footer %>

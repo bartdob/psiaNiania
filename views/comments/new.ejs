@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<h1>
+	Add new comment to niania <%= niania.name %>
+</h1>
+<div class="container">
+	<div style="width: 30%; margin: 0 auto;">
+		
+	<form action="/niania/<%= niania._id %>/comments" method="POST">
+		<div class="form-group">
+			<input class="form-control" type="text" name="comment[text]" placeholder="text">
+		</div>
+		
+		<div class="form-group">
+			<input class="form-control" type="text" name="comment[author]" placeholder="<%= currentUser.username %>" value="<%= currentUser.username %>">
+		</div>
+		
+<div>
+	<button class="btn btn-primary btn-block">
+		Submit
+	</button>
+</div>	
+</form>
+	</div>
+	
+<a href="/niania">Go Back</a>
+<% include ../partials/footer %>
+	
+</div>
