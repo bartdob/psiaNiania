@@ -4,6 +4,13 @@ var nianiaSchema = new mongoose.Schema({
 	name: String,
 	image: String,
 	desc: String, //description of niania
+	author: {
+		username: String,
+      id: {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "User"
+      },
+   	},
 	comments: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

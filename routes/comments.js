@@ -25,15 +25,47 @@ router.post("/niania/:id/comments", isLogin, function(req, res){
 				if(err){
 					console.log(err);
 				}else{
+					//add username and id to comment
+					comment.author.id = req.user._id;
+					comment.author.username = req.user.username;
+					// save
+					comment.save();
 					foundNiania.comments.push(comment);
 					foundNiania.save();
+					console.log(comment);
+               		//req.flash('success', 'Created a comment!');
 					res.redirect("/niania/" + foundNiania._id);
 				}
 			
-		}) 
+		}); 
 	}
-})
-})
+});
+});
+
+//comment edit routes
+
+router.get("/niania/:id/comments/:comment_id/edit", checkCommentOwnership, function(req, res){
+	Comment.findById(req.params.comment_id, function(err, foundComment){
+		if(err){
+			res.redirect("back");
+		}else{
+			res.render("comments/edit", {niania_id: req.params.id, comment: foundComment})
+	}		
+});
+});
+
+// comment update
+
+router.put("/niania/:id/comments/:comment_id/", checkCommentOwnership, function(req, res){
+	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+		if(err){
+			res.redirect("back");
+		}else{
+			res.redirect("/niania/" + req.params.id);
+		}
+	});
+});
+
 
 // Middleware
 
@@ -43,5 +75,25 @@ function isLogin(req, res, next){
 	}
 	res.redirect("/login");
 }
+
+function checkCommentOwnership(req, res, next){
+	if(req.isAuthenticated()){
+		var idParams =  req.params.comment_id;
+		Comment.findById(idParams, function(err, foundComment){
+		if(err){
+			res.redirect("back");
+		} else{
+			//user own comment
+		if(foundComment.author.id.equals(req.user._id)){
+			next();
+		}else{
+			res.redirect("back");
+		}
+		}
+	});
+	}else{
+		   res.redirect("back");
+		   }
+};
 
 module.exports = router;

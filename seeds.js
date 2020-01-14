@@ -21,28 +21,31 @@ var data = [
 
 function seedDB(){
 	Comment.deleteMany({}, function(err){
-	if(err){
+	 if(err){
+	 	console.log(err);
+	 }})
+	 Niania.deleteMany({}, function(err){
+	 if(err){
 		console.log(err);
-	}})
-	Niania.deleteMany({}, function(err){
-	if(err){
-		console.log(err);
-	}
-	console.log("data has been removed");
+	 }
+	 console.log("data has been removed");
 		data.forEach(function(seed){
 	Niania.create(seed, function(err, data){
 		if(err){
 			console.log(err);
 		}else{
 			console.log("add new niania Y :D");
-			Comment.create({text: "Love, love, love... :D", author: "Hesus"}, function(err, comment){
-                            if(err){
-                                console.log(err);
-                            } else {
-                                data.comments.push(comment);
-                                data.save();
-                                console.log("Created new comment");
-                            }
+			Comment.create(
+				{text: "Love, love, love... :D", 
+				 username: "Hesus"
+	}, function(err, comment){
+	if(err){
+	console.log(err);
+	} else {
+	data.comments.push(comment);
+	data.save();
+	console.log("Created new comment");
+	}
 						});
 					}
 				});

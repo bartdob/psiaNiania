@@ -1,5 +1,5 @@
 var express = require("express");
-var router  = express.Router();
+var router  = express.Router({mergeParams: true});
 var Niania	= require("../models/niania");
 
 
@@ -15,11 +15,15 @@ router.get("/niania", function(req, res){
 	
 })
 
-router.post("/niania", function(req, res){
+router.post("/niania", isLogin, function(req, res){
 	var name = req.body.name;
 	var image = req.body.image;
 	var desc = req.body.desc;
-	var newNiania = {name: name, image: image, desc: desc}
+	var author = {
+		id: req.user._id,
+		username: req.user.username
+	}
+	var newNiania = {name: name, image: image, desc: desc, author: author};
 	Niania.create(newNiania, function(err, neeewCreated){
 		if(err){
 			console.log(err)
@@ -29,7 +33,7 @@ router.post("/niania", function(req, res){
 	});
 });
 
-router.get("/niania/new", function(req, res){
+router.get("/niania/new", isLogin, function(req, res){
 	res.render("niania/new");
 });
 //Show description about nianias
@@ -43,5 +47,66 @@ router.get("/niania/:id", function(req, res){
 		}						 
 	});
 });
+
+//=================================Edit ROUTES ==================================
+
+router.get("/niania/:id/edit", checkNianiaOwenership, function(req, res){
+		var idParams =  req.params.id;
+		Niania.findById(idParams, function(err, foundNiania){
+		res.render("niania/edit", {niania: foundNiania});
+	});
+});
+//===============================UPDATe ROUTE ====================================
+router.put("/niania/:id", checkNianiaOwenership, function(req, res){
+	Niania.findOneAndUpdate(req.params.id, req.body.niania, function(err, updateNiania){
+	if(err){
+		res.redirect("niania");
+	}else{
+		res.redirect("/niania/" + req.params.id);
+		}
+	});
+});
+
+//====================================Destroy
+
+router.delete("/niania/:id", checkNianiaOwenership, function(req, res){
+	var idParams =  req.params.id;
+	Niania.findOneAndRemove((idParams), function(err, foundNiania){
+		if(err){
+			res.redirect("/niania");
+		}else{
+			res.redirect("/niania");
+		}						 
+	});
+});
+
+
+function isLogin(req, res, next){
+	if(req.isAuthenticated()){
+		return next();
+	}
+	res.redirect("/login");
+}
+
+function checkNianiaOwenership(req, res, next){
+	if(req.isAuthenticated()){
+		var idParams =  req.params.id;
+		Niania.findById(idParams, function(err, foundNiania){
+		if(err){
+			res.redirect("back");
+		} else{
+			//user own niania
+		if(foundNiania.author.id.equals(req.user._id)){
+			next();
+		}else{
+			res.redirect("back");
+		}
+		}
+	});
+	}else{
+		   res.redirect("back");
+		   }
+};
+
 
 module.exports = router;

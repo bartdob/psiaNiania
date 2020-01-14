@@ -1,59 +1,70 @@
 <% include ../partials/header %>
 <div class="container">
 
-	<div class="container">
+	<div class="container border border-info">
 		<div class="row">
-				<div class="container">
-					
+			<div class="container">
 				<h1>
 					<p> <strong><%= niania.name %></strong></p>
 				</h1>
-				</div>
 				<div class="container">
 					
 					<p> <img style="height: 300px;" src="<%=niania.image%>"> </p>
 				
-				<p>
-				<%=niania.desc%>
-				</p>
+					<p><%=niania.desc%></p>
+					<em><p> Submitted By <%=niania.author.username%></p></em>
 			
-				<h4 class="text-right"><strong> 20zl/h </strong></h4>
+					<h4 class="text-right"><strong> 25zl/h </strong></h4>
+					<%if(currentUser && niania.author.id.equals(currentUser._id)){%>
+					<a class="btn btn-info float-right" href="/niania/<%= niania._id %>/edit">Edit</a>
+					<form action="/niania/<%=niania._id%>?_method=DELETE" method="POST">
+						<button class="btn-ntn danger float-right">
+							Delete!
+						</button>
+						
+					</form>
+					<%}%>
+				</div>
+				
 			</div>
 		</div>
 	</div>
 	
 	<div class="container">		
-				<div class="container">
 
 				<p>
 					<a class="btn btn-warning" href="/niania/<%= niania._id %>/comments/new"> ADD COMMENT </a>
 				</p>
-				</div>
+	</div>
 
 				<br>	
 
 
 	<div class="container border border-warning">
 
-			<div class="row border borger-info">
+		<div>
 			<% niania.comments.forEach(function(comment){ %>
 
-					<div class="d-flex justify-content-between">
-						<p>
-							<strong><%= comment.author %></strong>
-							<span class="text-right"> 10 days ago </span>
-						</p> 
-					</div>
+			<div class="container">
+				<p>
+					<strong>
+					<%= comment.author.username %>
+					</strong>
+				</p> 
 			</div>
 				<br>
 				</hr>
-					<div class="container">
-					<p>
-						<%= comment.text %>
-					</p>
-					</div>
-			<!-- <%}) %> -->
+			<div class="container">
+				<p>
+				<%= comment.text %>
+				</p>
+				<%if(currentUser && comment.author.id.equals(currentUser._id)){%>
+					<a class="btn btn-xs btn-warning" href="/niania/<%=niania._id%>/comments/<%=comment._id%>
+					/edit">Edit</a>
+				<%}%>
 			</div>
+		  <%}) %>
+		</div>
 	</div>
 </div>
 
