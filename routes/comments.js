@@ -23,6 +23,7 @@ router.post("/niania/:id/comments", isLogin, function(req, res){
 		else{
 			Comment.create(req.body.comment, function(err, comment){
 				if(err){
+					req.flash("error", "Something went wrong... ")
 					console.log(err);
 				}else{
 					//add username and id to comment
@@ -33,7 +34,7 @@ router.post("/niania/:id/comments", isLogin, function(req, res){
 					foundNiania.comments.push(comment);
 					foundNiania.save();
 					console.log(comment);
-               		//req.flash('success', 'Created a comment!');
+               		req.flash('success', 'Created a comment!');
 					res.redirect("/niania/" + foundNiania._id);
 				}
 			
@@ -45,13 +46,20 @@ router.post("/niania/:id/comments", isLogin, function(req, res){
 //comment edit routes
 
 router.get("/niania/:id/comments/:comment_id/edit", checkCommentOwnership, function(req, res){
-	Comment.findById(req.params.comment_id, function(err, foundComment){
+	Niania.findById(req.params.id, function(err, foundNiania){
+		if(err || !foundNiania){
+			req.flash("error", "No niania found");
+			return res.redirect("back");
+		}
+		Comment.findById(req.params.comment_id, function(err, foundComment){
 		if(err){
 			res.redirect("back");
 		}else{
 			res.render("comments/edit", {niania_id: req.params.id, comment: foundComment})
-	}		
-});
+	    }		
+      });
+	});
+	
 });
 
 // comment update
@@ -80,18 +88,21 @@ function checkCommentOwnership(req, res, next){
 	if(req.isAuthenticated()){
 		var idParams =  req.params.comment_id;
 		Comment.findById(idParams, function(err, foundComment){
-		if(err){
+		if(err || !foundComment){
+			req.flash("error", "Comment not found");
 			res.redirect("back");
 		} else{
 			//user own comment
 		if(foundComment.author.id.equals(req.user._id)){
 			next();
 		}else{
+			req.flash("error", "No permission to do that")
 			res.redirect("back");
 		}
 		}
 	});
 	}else{
+		req.flash("error", "You need to be loggin to do that")
 		   res.redirect("back");
 		   }
 };

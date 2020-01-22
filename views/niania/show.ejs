@@ -4,21 +4,24 @@
 	<div class="container border border-info">
 		<div class="row">
 			<div class="container">
-				<h1>
+				<h1 class="text-center">
 					<p> <strong><%= niania.name %></strong></p>
 				</h1>
 				<div class="container">
 					
 					<p> <img style="height: 300px;" src="<%=niania.image%>"> </p>
 				
-					<p><%=niania.desc%></p>
-					<em><p> Submitted By <%=niania.author.username%></p></em>
+					<p> info: </p> 
+						<p>
+							
+					<%=niania.desc%></p>
+					<em><p> Submitted By <strong><%=niania.author.username%></strong></p></em>
 			
 					<h4 class="text-right"><strong> 25zl/h </strong></h4>
 					<%if(currentUser && niania.author.id.equals(currentUser._id)){%>
 					<a class="btn btn-info float-right" href="/niania/<%= niania._id %>/edit">Edit</a>
 					<form action="/niania/<%=niania._id%>?_method=DELETE" method="POST">
-						<button class="btn-ntn danger float-right">
+						<button class="btn btn-danger float-right">
 							Delete!
 						</button>
 						
@@ -46,16 +49,16 @@
 			<% niania.comments.forEach(function(comment){ %>
 
 			<div class="container">
-				<p>
-					<strong>
+				<p class="p-2 m-2 float-right">
+					<strong> 
 					<%= comment.author.username %>
 					</strong>
 				</p> 
 			</div>
 				<br>
 				</hr>
-			<div class="container">
-				<p>
+			<div class="container border border-warning" id="commentText">
+				<p> comment: </br>
 				<%= comment.text %>
 				</p>
 				<%if(currentUser && comment.author.id.equals(currentUser._id)){%>

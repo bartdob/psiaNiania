@@ -1,25 +1,23 @@
 <% include ../partials/header %>
-<div class="container">
+<div class="container justify-content-between">
 
 	
-<h1>
-	Oto nianie
+<h1 class="text-center p-2">
+	aktualnie dostępne nianie
 </h1>
-	
-	<div class="container">
-		<a class="btn btn-primary" role="button" href="/niania/new" class="text-right">Add new niania</a>
-	</div>
+	</br>
+</br>
 
-<div class="container">	
+<div class="container border border-warning">	
 	<div class="row" style="display:flex; flex-wrap: wrap;">
 
 <% niania.forEach(function(niania){%>
-		<div class="col-md-3 col-sm-6 border border-4 img-thumbnail img-fluid">
-			<h2><%= niania.name %></h2>
-				<img src="<%= niania.image %>" class="img-thumbnail img-fluid" style="height: 120px; max-width: 150px;">
+		<div class="col-md-3 col-sm-6 border-warning img-thumbnail img-fluid p-1" id="commentText">
+			<h2 class="text-center"><%= niania.name %></h2>
+				<img src="<%= niania.image %>" class="img-thumbnail img-fluid" style="height: 120px; width: 100px;">
 					<div class="caption">
 						<p>
-							<a class="btn btn-primary" href="/niania/<%=niania._id %>">Opis</a>
+							<a class="btn btn-primary float-right" href="/niania/<%=niania._id %>">info</a>
 						</p>
 			</div>
 			</div>
@@ -28,7 +26,10 @@
 <% }); %>
 		
 	</div>
-</div>	
+</div>
+	<div class="container p-4">
+		<a class="btn btn-primary float-right" role="button" href="/niania/new" class="text-right">add new Niania</a>
+	</div>
 </div>
 		
 <% include ../partials/footer %>

@@ -1,4 +1,12 @@
 body{
-	background: grey;
+	background: #1ABC9C;
+	font-family: 'Oswald', sans-serif;
 }
 
+.jumbotron {
+    background: none
+}
+
+#commentText{
+	background: #D6DBDF;
+}

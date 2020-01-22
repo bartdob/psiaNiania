@@ -12,8 +12,7 @@ router.get("/niania", function(req, res){
 			res.render("niania/niania", {niania: allniania});
 		}
 	});
-	
-})
+});
 
 router.post("/niania", isLogin, function(req, res){
 	var name = req.body.name;
@@ -28,7 +27,7 @@ router.post("/niania", isLogin, function(req, res){
 		if(err){
 			console.log(err)
 		}else{
-			res.redirect("/niania/niania")
+			res.redirect("/niania")
 		}
 	});
 });
@@ -40,9 +39,11 @@ router.get("/niania/new", isLogin, function(req, res){
 router.get("/niania/:id", function(req, res){
 	var idParams =  req.params.id;
 	Niania.findById(idParams).populate("comments").exec(function(err, foundNiania){
-		if(err){
-			console.log(err);
+		if(err || !foundNiania){
+			req.flash("error", "Niania not found");
+			res.redirect("back");
 		}else{
+			console.log(foundNiania);
 			res.render("niania/show", {niania: foundNiania});
 		}						 
 	});
@@ -81,10 +82,13 @@ router.delete("/niania/:id", checkNianiaOwenership, function(req, res){
 });
 
 
+//===================================Function/ Middleware
+
 function isLogin(req, res, next){
 	if(req.isAuthenticated()){
 		return next();
 	}
+	req.flash("error", "Please login first");
 	res.redirect("/login");
 }
 
@@ -92,18 +96,21 @@ function checkNianiaOwenership(req, res, next){
 	if(req.isAuthenticated()){
 		var idParams =  req.params.id;
 		Niania.findById(idParams, function(err, foundNiania){
-		if(err){
+		if(err || !foundNiania){
+			req.flash("error", "Niania not found, please try again... ")
 			res.redirect("back");
 		} else{
 			//user own niania
 		if(foundNiania.author.id.equals(req.user._id)){
 			next();
 		}else{
+			req.flash("error", "No permission to do that")
 			res.redirect("back");
 		}
 		}
 	});
 	}else{
+			req.flash('error', 'You need to be login to do that');
 		   res.redirect("back");
 		   }
 };

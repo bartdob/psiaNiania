@@ -8,6 +8,11 @@ router.get("/", function(req, res){
 	res.render("landing");
 });
 
+
+router.get("/kontakt", function(req, res){
+		res.render("kontakt");
+});
+
 //	auth rutes
 
 //==============================
@@ -19,11 +24,12 @@ router.post("/register", function(req, res){
 	var newUser = new User({username: req.body.username});
 	User.register(newUser, req.body.password, function(err, user){
 		if(err){
-			console.log(err);
+			req.flash("error", err.message) // err goes from error passport
 			return res.render("register");
 		}
 		passport.authenticate("local")(req, res, function(){
-			res.redirect("/niania")
+			req.flash("success", "Welcome to... " + user.username);
+			res.redirect("/niania");
 		});
 	});
 });
@@ -45,7 +51,8 @@ router.post("/login", passport.authenticate("local",
 
 router.get("/logout", function(req, res){
 	req.logout();
-	res.redirect("login")
+	req.flash("success", "LOGGED YOU OUT!");
+	res.redirect("/login");
 });
 
 function isLogin(req, res, next){
