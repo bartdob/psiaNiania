@@ -50,7 +50,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 // set up SESSION
 app.use(require("express-session")({
-		secret: "Patricia is cute",
+		secret: "Patricia",
 		resave: false,
 		saveUninitialized: false,
 }));
