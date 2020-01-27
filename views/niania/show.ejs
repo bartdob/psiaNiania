@@ -17,7 +17,7 @@
 					<%=niania.desc%></p>
 					<em><p> Submitted By <strong><%=niania.author.username%></strong></p></em>
 			
-					<h4 class="text-right"><strong> 25zl/h </strong></h4>
+					<h4 class="text-right"><strong> <%=niania.price%> PLN/h </strong></h4>
 					<%if(currentUser && niania.author.id.equals(currentUser._id)){%>
 					<a class="btn btn-info float-right" href="/niania/<%= niania._id %>/edit">Edit</a>
 					<form action="/niania/<%=niania._id%>?_method=DELETE" method="POST">

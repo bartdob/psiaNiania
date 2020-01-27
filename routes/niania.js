@@ -16,13 +16,14 @@ router.get("/niania", function(req, res){
 
 router.post("/niania", isLogin, function(req, res){
 	var name = req.body.name;
+	var price = req.body.price;
 	var image = req.body.image;
 	var desc = req.body.desc;
 	var author = {
 		id: req.user._id,
 		username: req.user.username
 	}
-	var newNiania = {name: name, image: image, desc: desc, author: author};
+	var newNiania = {name: name, price: price, image: image, desc: desc, author: author};
 	Niania.create(newNiania, function(err, neeewCreated){
 		if(err){
 			console.log(err)
